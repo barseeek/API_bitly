@@ -31,4 +31,5 @@ BITLY_TOKEN=YOUR_BITLY_TOKEN
 This code was written for educational purposes as part of an online course for web developers at dvmn.org.
 
 ## License
-This script is provided under the MIT License. Feel free to use and modify it according to your needs.
+
+This script is provided under the MIT License - [License](LICENSE.md)
