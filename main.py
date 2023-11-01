@@ -3,37 +3,10 @@ import os
 from dotenv import load_dotenv
 from urllib.parse import urlparse
 
-load_dotenv()
-header = {"Authorization": f"Bearer {os.environ['BITLY_TOKEN']}"}
 
-
-def is_bitlink(url):
-    parsed = urlparse(url)
-    bitlink = parsed.netloc + parsed.path
-    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{bitlink}", headers=header)
-    return response.ok
-
-
-def shorten_link(url):
-    data = {"long_url": url}
-    response = requests.post("https://api-ssl.bitly.com/v4/bitlinks", headers=header, json=data)
-    response.raise_for_status()
-    return response.json()['id']
-
-
-def count_clicks(url):
-    parsed = urlparse(url)
-    bitlink = parsed.netloc + parsed.path
-    params = {
-        "unit": "day",
-        "units": -1}
-    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{bitlink}/clicks/summary",
-                            headers=header, params=params)
-    response.raise_for_status()
-    return response.json()['total_clicks']
-
-
-if __name__ == '__main__':
+def main():
+    load_dotenv()
+    token = os.environ['BITLY_TOKEN']
     url = input("Введите URL\n")
     try:
         if is_bitlink(url):
@@ -46,3 +19,36 @@ if __name__ == '__main__':
             print('Битлинк для адреса {0}: {1}'.format(url, bitlink))
     except requests.exceptions.RequestException() as err:
         exit('Error, check input link. Error message: {0}'.format(err))
+
+
+def is_bitlink(token, url):
+    header = {"Authorization": f"Bearer {os.environ['BITLY_TOKEN']}"}
+    parsed_url = urlparse(url)
+    bitlink = parsed_url.netloc + parsed_url.path
+    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{bitlink}", headers=header)
+    return response.ok
+
+
+def shorten_link(token, url):
+    header = {"Authorization": f"Bearer {os.environ['BITLY_TOKEN']}"}
+    long_url = {"long_url": url}
+    response = requests.post("https://api-ssl.bitly.com/v4/bitlinks", headers=header, json=long_url)
+    response.raise_for_status()
+    return response.json()['id']
+
+
+def count_clicks(token, url):
+    header = {"Authorization": f"Bearer {os.environ['BITLY_TOKEN']}"}
+    parsed_url = urlparse(url)
+    bitlink = parsed_url.netloc + parsed_url.path
+    params = {
+        "unit": "day",
+        "units": -1}
+    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{bitlink}/clicks/summary",
+                            headers=header, params=params)
+    response.raise_for_status()
+    return response.json()['total_clicks']
+
+
+if __name__ == '__main__':
+    main()
