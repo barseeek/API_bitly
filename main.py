@@ -9,13 +9,13 @@ def main():
     token = os.environ['BITLY_TOKEN']
     url = input("Введите URL\n")
     try:
-        if is_bitlink(url):
+        if is_bitlink(token,url):
             print('Вы ввели действующий битлинк, считаю клики...')
-            click_counter = count_clicks(url)
-            print('Количество кликов по ссылке {url} = {count}'.format(url=url, counter=click_counter))
+            click_counter = count_clicks(token,url)
+            print('Количество кликов по ссылке {url} = {count}'.format(url=url, count=click_counter))
         else:
             print('Вы ввели URL, создаю битлинк...')
-            bitlink = shorten_link(url)
+            bitlink = shorten_link(token,url)
             print('Битлинк для адреса {url}: {short_link}'.format(url=url, short_link=bitlink))
     except requests.exceptions.RequestException() as err:
         print('Error, check input link. Error message: {error}'.format(error=err))
