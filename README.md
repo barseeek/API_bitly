@@ -26,6 +26,28 @@ pip install -r requirements.txt
 BITLY_TOKEN=YOUR_BITLY_TOKEN
 ```
 
+## Examples
+
+```
+from main import *
+
+bitly = main()
+```
+1. Non-bitly URL
+
+```
+$ Введите URL
+https://google.com
+Вы ввели URL, создаю битлинк...
+Битлинк для адреса https://google.com: bit.ly/45Te3MY
+```
+2. Bitly URL
+```
+$ Введите URL
+http://bit.ly/45Te3MY
+Вы ввели действующий битлинк, считаю клики...
+Количество кликов по ссылке http://bit.ly/45Te3MY = 2
+```
 ## Project Goals
 
 This code was written for educational purposes as part of an online course for web developers at dvmn.org.
