@@ -9,7 +9,7 @@ def main():
     load_dotenv()
     token = os.environ['BITLY_TOKEN']
     args = create_arg_parser()
-    url = agrs.url
+    url = args.url
     try:
         if is_bitlink(token,url):
             print('Вы ввели действующий битлинк, считаю клики...')
