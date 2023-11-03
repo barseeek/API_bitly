@@ -28,23 +28,20 @@ BITLY_TOKEN=YOUR_BITLY_TOKEN
 
 ## Examples
 
-```
-from main import *
-
-bitly = main()
-```
 1. Non-bitly URL
-
 ```
-$ Введите URL
-https://google.com
+$ python main.py https://google.com
+```
+```
 Вы ввели URL, создаю битлинк...
 Битлинк для адреса https://google.com: bit.ly/45Te3MY
 ```
 2. Bitly URL
 ```
-$ Введите URL
-http://bit.ly/45Te3MY
+$ python main.py http://bit.ly/45Te3MY
+```
+```
+
 Вы ввели действующий битлинк, считаю клики...
 Количество кликов по ссылке http://bit.ly/45Te3MY = 2
 ```
