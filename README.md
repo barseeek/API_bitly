@@ -41,7 +41,6 @@ $ python main.py https://google.com
 $ python main.py http://bit.ly/45Te3MY
 ```
 ```
-
 Вы ввели действующий битлинк, считаю клики...
 Количество кликов по ссылке http://bit.ly/45Te3MY = 2
 ```
