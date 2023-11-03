@@ -1,5 +1,6 @@
 import requests
 import os
+import argparse
 from dotenv import load_dotenv
 from urllib.parse import urlparse
 
@@ -7,7 +8,8 @@ from urllib.parse import urlparse
 def main():
     load_dotenv()
     token = os.environ['BITLY_TOKEN']
-    url = input("Введите URL\n")
+    args = create_arg_parser()
+    url = agrs.url
     try:
         if is_bitlink(token,url):
             print('Вы ввели действующий битлинк, считаю клики...')
@@ -20,6 +22,12 @@ def main():
     except requests.exceptions.RequestException() as err:
         print('Error, check input link. Error message: {error}'.format(error=err))
 
+
+def create_arg_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('url', help = 'Введите URL')
+    args = parser.parse_args()
+    return args
 
 def is_bitlink(token, url):
     header = {"Authorization": f"Bearer {token}"}
