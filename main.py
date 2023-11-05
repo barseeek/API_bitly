@@ -9,51 +9,68 @@ def main():
     load_dotenv()
     token = os.environ['BITLY_TOKEN']
     args = create_arg_parser()
-    url = args.url
     try:
-        if is_bitlink(token,url):
+        if is_bitlink(token, args.url):
             print('Вы ввели действующий битлинк, считаю клики...')
-            click_counter = count_clicks(token,url)
-            print('Количество кликов по ссылке {url} = {count}'.format(url=url, count=click_counter))
+            click_counter = count_clicks(token, args.url)
+            print('Количество кликов по ссылке {url} = {count}'.format(
+                url=args.url,
+                count=click_counter))
         else:
             print('Вы ввели URL, создаю битлинк...')
-            bitlink = shorten_link(token,url)
-            print('Битлинк для адреса {url}: {short_link}'.format(url=url, short_link=bitlink))
+            bitlink = shorten_link(token, args.url)
+            print('Битлинк для адреса {url}: {short_link}'.format(
+                url=args.url,
+                short_link=bitlink))
     except requests.exceptions.RequestException() as err:
-        print('Error, check input link. Error message: {error}'.format(error=err))
+        print('Error, check input link. Error message: {error}'.format(
+            error=err))
 
 
 def create_arg_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('url', help = 'Введите URL')
+    parser.add_argument('url', help='Введите URL')
     args = parser.parse_args()
     return args
 
+
 def is_bitlink(token, url):
-    header = {"Authorization": f"Bearer {token}"}
+    header = {'Authorization': f'Bearer {token}'}
     parsed_url = urlparse(url)
-    bitlink = '{netloc}{path}'.format(netloc=parsed_url.netloc,path=parsed_url.path)
-    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{bitlink}", headers=header)
+    bitlink = '{netloc}{path}'.format(
+        netloc=parsed_url.netloc,
+        path=parsed_url.path)
+    response = requests.get(
+        f'https://api-ssl.bitly.com/v4/bitlinks/{bitlink}',
+        headers=header)
     return response.ok
 
 
 def shorten_link(token, url):
-    header = {"Authorization": f"Bearer {token}"}
-    long_url = {"long_url": url}
-    response = requests.post("https://api-ssl.bitly.com/v4/bitlinks", headers=header, json=long_url)
+    header = {'Authorization': f'Bearer {token}'}
+    long_url = {'long_url': url}
+    response = requests.post(
+        'https://api-ssl.bitly.com/v4/bitlinks',
+        headers=header,
+        json=long_url)
     response.raise_for_status()
     return response.json()['id']
 
 
 def count_clicks(token, url):
-    header = {"Authorization": f"Bearer {token}"}
+    header = {'Authorization': f'Bearer {token}'}
     parsed_url = urlparse(url)
-    bitlink = '{netloc}{path}'.format(netloc=parsed_url.netloc,path=parsed_url.path)
+    bitlink = '{netloc}{path}'.format(
+        netloc=parsed_url.netloc,
+        path=parsed_url.path)
     params = {
-        "unit": "day",
-        "units": -1}
-    response = requests.get(f"https://api-ssl.bitly.com/v4/bitlinks/{bitlink}/clicks/summary",
-                            headers=header, params=params)
+        'unit': 'day',
+        'units': -1
+    }
+    response = requests.get(
+        f'https://api-ssl.bitly.com/v4/bitlinks/{bitlink}/clicks/summary',
+        headers=header,
+        params=params)
     response.raise_for_status()
     return response.json()['total_clicks']
 
